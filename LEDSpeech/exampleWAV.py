@@ -3,16 +3,17 @@
 import pyaudio
 import wave
 
-CHUNK = 1024
+CHUNK = 8192
 FORMAT = pyaudio.paInt16
-CHANNELS = 2
-RATE = 48000
+CHANNELS = 1
+RATE = 44100
 RECORD_SECONDS = 5
+DEVICE_CHANNEL = 2
 WAVE_OUTPUT_FILENAME = "output.wav"
 
 p = pyaudio.PyAudio()
 
-stream = p.open(format=FORMAT,channels=CHANNELS,rate=RATE,input=True,frames_per_buffer=CHUNK)
+stream = p.open(format=FORMAT,channels=CHANNELS,rate=RATE,input_device_index=DEVICE_CHANNEL,input=True,frames_per_buffer=CHUNK)
 
 print("* recording")
 
