@@ -5,8 +5,8 @@ import wave
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
-CHANNELS = 1
-RATE = 44100
+CHANNELS = 2
+RATE = 48000
 RECORD_SECONDS = 5
 WAVE_OUTPUT_FILENAME = "output.wav"
 
