@@ -23,31 +23,30 @@ def greenOn():
     print("Green On")
     #Turn on Green LED
     GPIO.output(LED_GREEN,GPIO.HIGH)
-    return
+    
+    
 
 def greenOff():
     print("Green Off")
     GPIO.output(LED_GREEN,GPIO.LOW)
-    return
+    
 
 def destroy():
     print("QUITTING")
     greenOff()
     GPIO.cleanup()
-    return
-
-
+    
 def main():
-
-    try:
+    while True:
         greenOn()
-        
-        
-    except KeyboardInterrupt: 
-        #release our resources
-        print("pressed")
-        destroy()
+    
+
+try:
+    main()
+except KeyboardInterrupt: 
+    #release our resources
+    print("pressed")
+    destroy()              
 
 
-#Start this thing
-main()
+    
