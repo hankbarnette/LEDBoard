@@ -10,6 +10,7 @@ import speech_recognition as sr
 
 import httplib2
 import os
+import shutil
 
 from apiclient import discovery
 from apiclient import errors
@@ -40,11 +41,12 @@ LED_RED = GPIO3
 BUTTON_ONE = GPIO0
 
 #File Setups
-USE_GOOGLE_DRIVE = true
+USE_GOOGLE_DRIVE = False
 SCOPES = 'https://www.googleapis.com/auth/drive'
 CLIENT_SECRET_FILE = '/home/pi/Desktop/Credentials/client_secret.json'
 APPLICATION_NAME = 'Speech Recognition LED Board'
 messageFile = '/home/pi/Desktop/Python/LEDSpeech/spokenMessages.txt'
+remotePath = '/LEDSIGN'
 messageFileTitle = 'spokenMessages.txt'
 messageFileID = '0B_c8EUKFDVmpLUtDNjJzOEJXcDA'
 messageFileDescription = 'Messages Spoken via Raspberry PI'
@@ -193,8 +195,9 @@ def watchButton():
             print ("---Button pushed---")
             processText(detectSpeech())
 
-def updateFileNetwork(file)
+def updateFileNetwork(file):
     print("Uploading file to NETWORK: %s" % file)
+    shutil.copy(file,remotePath)
     
 
 
@@ -209,7 +212,7 @@ def processText(text):
     if USE_GOOGLE_DRIVE:
         service = setupDrive()
         updateFileDRIVE(service,messageFileID,messageFileTitle,messageFileDescription,messageFileMIMETYPE,messageFile,0)
-    else
+    else:
         updateFileNetwork(messageFile)
 
     #Turn off Light
