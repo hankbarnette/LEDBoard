@@ -16,8 +16,13 @@ CLIENT_SECRET_FILE = '/home/pi/Desktop/Credentials/client_secret.json'
 APPLICATION_NAME = 'Speech Recognition LED Board'
 
 
-messageFile = '/home/pi/Desktop/Python/LEDSpeech/messages.txt'
+messageFile = '/home/pi/Desktop/Python/LEDSpeech/spokenMessages.txt'
+messageFileTitle = 'spokenMessages.txt'
+messageFileID = '0B_c8EUKFDVmpLUtDNjJzOEJXcDA'
+messageFileDescription = 'Messages Spoken via Raspberry PI'
+messageFileMIMETYPE = 'text/plain'
 LEDFolderID = '0B_c8EUKFDVmpTW1HZ1dLRFpla0E'
+
 
 try:
     import argparse
@@ -56,7 +61,7 @@ def getMessages(service):
     #Gets Message File
     print("Getting Files")
     #results = service.files().list(maxResults=10).execute()
-    query = "title contains 'message'"
+    query = "title contains 'spokenMessage'"
     results = service.files().list(q=query).execute()
     items = results.get('items', [])
     if not items:
@@ -87,7 +92,29 @@ def insertFile(service, title, description, parent_id, mime_type, filename):
         print("An error occured: %s" % error)
         return None
     
-        
+def updateFile(service, file_id, new_title, new_description, new_mime_type, new_filename, new_revision):
+
+    try:
+        print('Uploading file: %s' % new_title)
+        #Get the file to update
+        file = service.files().get(fileId=file_id).execute()
+
+        #update metadata
+        file['title'] = new_title
+        file['description'] = new_description
+        file['mimeType'] = new_mime_type
+
+        #File Content
+        media_body = MediaFileUpload(new_filename,mimetype=new_mime_type,resumable=True)
+
+        #Send the request
+        updated_file = service.files().update(fileId=file_id,body=file,newRevision=new_revision,media_body=media_body).execute()
+
+        return updated_file
+    except errors.HttpError as error:
+        print ('Update error occured: %s' % error)
+        return None
+    
 
 #setup drive
 def setupDrive():
@@ -101,5 +128,8 @@ def setupDrive():
 if __name__ == '__main__':
     service = setupDrive()
     #getMessages(service)
-    insertFile(service, "Test File raspberry.txt","Sample Description",LEDFolderID,"text/plain",messageFile)
+    updateFile(service,messageFileID,messageFileTitle,messageFileDescription,messageFileMIMETYPE,messageFile,0)
+    #insertFile(service, "Test File raspberry.txt","Sample Description",LEDFolderID,"text/plain",messageFile)
+
+
 
