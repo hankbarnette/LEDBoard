@@ -5,7 +5,7 @@ import win32con
 import time
 import alphasign
 
-#message file paths
+#message file pathszz
 #messageFile = "F:\\Personal\\Google Drive\\LEDSIGN\\messages.txt"
 messageFile = "F:\\Personal\\Google Drive\\LEDSIGN\\messages.txt"
 messagePath = "F:\\Personal\\Google Drive\\LEDSIGN\\"
